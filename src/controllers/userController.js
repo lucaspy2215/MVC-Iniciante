@@ -6,7 +6,9 @@ export const rotaInicial = (req, res) => {
 }
 
 export const pegarUsuario = (req, res) => {
-    const usuarios = await User.find()
+    const usuarios = async () => {
+        return await User.find()
+    }
 
     res.json(usuarios)
 }

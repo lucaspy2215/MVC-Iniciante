@@ -1,4 +1,4 @@
-
+import mogoose from 'mongoose';
 
 const UserSchema = new mogoose.Schema({
     name:{type:String},
