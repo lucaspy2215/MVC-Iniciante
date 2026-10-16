@@ -6,4 +6,4 @@ const UserSchema = new mogoose.Schema({
     password:{type:String}
 })
 
-export const User = mogoose.model('User', UserSchema);
+export const User = mogoose.model('User', UserSchema,'Barbe.com');

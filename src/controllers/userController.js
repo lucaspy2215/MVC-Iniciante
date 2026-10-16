@@ -1,36 +1,53 @@
+import { User } from '../models/User.js';
 
+export const rotaInicial = (req, res) => res.json('Bem-vindo à API de Usuários!');
 
+export const pegarUsuario = async (req, res) => {
+  try {
+    res.json(await User.find().select('-password'));
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-export const rotaInicial = (req, res) => {
-    res.json('Bem-vindo à API de Usuários!');
-}
-
-export const pegarUsuario = (req, res) => {
-    const usuarios = async () => {
-        return await User.find()
-    }
-
-    res.json(usuarios)
-}
+export const pegarUsuarioPorId = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const criarUsuario = async (req, res) => {
-    const { name, email, password } = req.body
+  const { name, email, password } = req.body;
+  if (!name || !email || !password)
+    return res.status(400).json({ message: 'Todas as informações são obrigatórias.' });
 
-    try {
-        if (!name || !email || !password) {
-            res.json({ message: "Todas as informações são obrigatórias." })
-            return
-        }
+  try {
+    res.status(201).json(await User.create({ name, email, password }));
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-        const newUser = await User.create({
-            name: name,
-            email: email,
-            password: password
-        })
+export const atualizarUsuario = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-        res.json(newUser)
-    } catch (error) {
-        console.log('Erro ao adicionar o usuário')
-        return
-    }
-}
+export const deletarUsuario = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+    res.json({ message: 'Usuário removido.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
