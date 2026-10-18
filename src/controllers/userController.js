@@ -51,3 +51,16 @@ export const deletarUsuario = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user || user.password !== password)
+      return res.status(401).json({ message: 'Email ou senha inválidos' });
+    res.json({ name: user.name });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
