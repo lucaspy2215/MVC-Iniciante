@@ -24,7 +24,8 @@ Projeto de estudo que implementa o padrão **MVC** (Model, View, Controller) com
 MVC/
 ├─ index.js                  # servidor Express e rotas
 ├─ db.js                     # conexão com o MongoDB
-├─ .env                      # variáveis de ambiente (não vai para o Git)
+├─ .env                      # suas variáveis reais (não vai para o Git)
+├─ .env.example              # modelo do .env, sem valores reais
 ├─ package.json
 └─ src/
    ├─ models/
@@ -77,13 +78,23 @@ npm install
 
 ### 3. Configurar o `.env`
 
-Crie um arquivo `.env` na raiz com a URL de conexão do seu cluster:
+O repositório traz um arquivo de exemplo, o `.env.example`. Copie-o com o nome `.env`:
 
-```env
-MONGO_URL=mongodb+srv://USUARIO:SENHA@seu-cluster.mongodb.net/Barbearia
+```bash
+# Linux/Mac
+cp .env.example .env
+
+# Windows (PowerShell)
+copy .env.example .env
 ```
 
-O nome da variável deve ser o mesmo lido em `db.js`.
+Depois abra o `.env` e troque o conteúdo pela URL de conexão do **seu** cluster:
+
+```env
+MONGO_URL=mongodb+srv://SEU_USUARIO:SUA_SENHA@seu-cluster.mongodb.net/Barbearia
+```
+
+O nome da variável deve ser o mesmo lido em `db.js`. O banco deste projeto não é compartilhado: cada pessoa cria o próprio cluster gratuito no Atlas, e o arquivo `.env` nunca deve ser enviado ao GitHub.
 
 No Atlas, libere o seu IP em **Security → Network Access → Add IP Address**. Sem isso a conexão é recusada.
 
@@ -111,6 +122,16 @@ Conexão com o MongoDB estabelecida com sucesso!
 
 **Fluxo:** `login.html` → (login correto) → `bemvindo.html` → botão "Ver clientes" → `/`.
 Quem não tem conta usa o link "Criar conta" no login e, depois do cadastro, volta para a página central.
+
+### 🧪 Como testar o login
+
+Como o seu banco começa vazio, ainda não existe nenhum cliente para entrar. Siga estes passos:
+
+1. Abra `http://localhost:3000/cadastro.html` e cadastre um cliente (por exemplo, `teste@email.com` com a senha `123456`).
+2. Abra `http://localhost:3000/login.html` e entre com o mesmo email e senha.
+3. Você verá a tela de boas-vindas com o nome do cliente cadastrado.
+
+Erre a senha de propósito para ver a mensagem "Email ou senha inválidos".
 
 ## 🔌 Rotas da API
 
