@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-zinc-100 min-h-screen grid place-items-center p-8">
+  <main class="w-full max-w-sm">
+    <h1 class="text-3xl font-bold text-amber-400 mb-6 text-center">✂️ Entrar</h1>
+
+    <form id="form" class="grid gap-3">
+      <input name="email" type="email" placeholder="Email" required class="p-3 rounded-lg bg-zinc-800 border border-zinc-700">
+      <input name="password" type="password" placeholder="Senha" required class="p-3 rounded-lg bg-zinc-800 border border-zinc-700">
+      <button class="p-3 rounded-lg bg-amber-400 text-zinc-900 font-bold">Entrar</button>
+      <a href="/cadastro.html" class="text-sm text-zinc-400 text-center">Criar conta</a>
+    </form>
+  </main>
+
+  <script>
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      if (res.ok) location.href = '/';
+      else alert((await res.json()).message);
+    };
+  </script>
+</body>
+</html>
