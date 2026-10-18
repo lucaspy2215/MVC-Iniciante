@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Barbearia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-zinc-100 min-h-screen p-8">
+  <h1 class="text-3xl font-bold text-amber-400 mb-6">✂️ Clientes da Barbearia</h1>
+  <div id="lista" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+
+  <script>
+    fetch('/usuarios')
+      .then(r => r.json())
+      .then(usuarios => {
+        lista.innerHTML = usuarios.map(u => `
+          <div class="bg-zinc-800 rounded-xl p-5 border border-zinc-700">
+            <h2 class="text-xl font-semibold">${u.nome}</h2>
+            <p class="text-zinc-400">${u.email}</p>
+          </div>`).join('');
+      });
+  </script>
+</body>
+</html>
